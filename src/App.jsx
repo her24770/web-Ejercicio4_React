@@ -9,6 +9,7 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar />
+      <div className="page-wrapper">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/items" element={<Listado />} />
@@ -16,6 +17,7 @@ function App() {
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
+      </div>
     </BrowserRouter>
   )
 }
