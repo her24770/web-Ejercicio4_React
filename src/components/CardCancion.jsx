@@ -3,11 +3,11 @@ import './CardCancion.css'
 import { useNavigate } from 'react-router-dom'
 import Icon from './Icon'
 
-function CardCancion({ portada, nombre, artista, artistaId, duracion, preview }) {
+function CardCancion({ portada, nombre, artista, trackId, duracion, preview }) {
   const navigate = useNavigate()
 
   const handleClick = () => {
-    if (artistaId) navigate(`/items/${artistaId}`)
+    if (trackId) navigate(`/items/${trackId}`)
   }
 
   const handlePlay = (e) => {
@@ -43,7 +43,7 @@ CardCancion.propTypes = {
   portada:   PropTypes.string,
   nombre:    PropTypes.string.isRequired,
   artista:   PropTypes.string.isRequired,
-  artistaId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  trackId:   PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   duracion:  PropTypes.string,
   preview:   PropTypes.string,
 }

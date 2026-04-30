@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
-import './Home.css'
 import { Link, useNavigate } from 'react-router-dom'
 import CardCancion from '../components/CardCancion'
-import CardArtista from '../components/CardArtista'
 import Icon from '../components/Icon'
-import { getTopSongs, getTopArtists } from '../services/itunesService'
+import { getTopSongs } from '../services/itunesService'
+import './Home.css'
 
 function msToDuracion(ms) {
   if (!ms) return ''
@@ -16,29 +15,22 @@ function msToDuracion(ms) {
 
 function Home() {
   const [canciones, setCanciones] = useState([])
-  const [artistas, setArtistas] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState(null)
   const navigate = useNavigate()
 
   useEffect(() => {
-    Promise.all([getTopSongs(), getTopArtists()])
-      .then(([songEntries, artistEntries]) => {
-        setCanciones(songEntries.map(entry => ({
-          portada:   entry['im:image'][2].label,
-          nombre:    entry['im:name'].label,
-          artista:   entry['im:artist'].label,
-          artistaId: entry['im:artist'].attributes.href.split('/').pop(),
-          duracion:  msToDuracion(entry['im:duration']?.label),
-        })))
-        setArtistas(artistEntries.map(entry => ({
-          foto:      entry['im:image']?.[2]?.label || null,
-          nombre:    entry['im:name'].label,
-          genero:    entry['category']?.attributes?.term || 'Música',
-          artistaId: entry['id']?.attributes?.['im:id'],
+    getTopSongs()
+      .then(entries => {
+        setCanciones(entries.map(entry => ({
+          portada:  entry['im:image'][2].label,
+          nombre:   entry['im:name'].label,
+          artista:  entry['im:artist'].label,
+          trackId:  entry['id']?.attributes?.['im:id'],
+          duracion: msToDuracion(entry['im:duration']?.label),
         })))
       })
-      .catch(() => setError('No se pudieron cargar los datos. Intenta de nuevo.'))
+      .catch(() => setError('No se pudieron cargar las canciones. Intenta de nuevo.'))
       .finally(() => setCargando(false))
   }, [])
 
@@ -74,17 +66,6 @@ function Home() {
             ))}
           </div>
         )}
-      </div>
-
-      <div className="home__section">
-        <div className="home__section-header">
-          <h2 className="home__section-title">Artistas destacados</h2>
-        </div>
-        <div className="artistas-grid">
-          {artistas.map(artista => (
-            <CardArtista key={artista.artistaId} {...artista} />
-          ))}
-        </div>
       </div>
     </div>
   )

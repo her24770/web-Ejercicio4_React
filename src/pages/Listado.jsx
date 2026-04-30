@@ -16,22 +16,22 @@ function msToDuracion(ms) {
 
 function mapTopSong(entry) {
   return {
-    portada:   entry['im:image'][2].label,
-    nombre:    entry['im:name'].label,
-    artista:   entry['im:artist'].label,
-    artistaId: entry['im:artist'].attributes.href.split('/').pop(),
-    duracion:  msToDuracion(entry['im:duration']?.label),
+    portada:  entry['im:image'][2].label,
+    nombre:   entry['im:name'].label,
+    artista:  entry['im:artist'].label,
+    trackId:  entry['id']?.attributes?.['im:id'],
+    duracion: msToDuracion(entry['im:duration']?.label),
   }
 }
 
 function mapSearchResult(result) {
   return {
-    portada:   result.artworkUrl100,
-    nombre:    result.trackName,
-    artista:   result.artistName,
-    artistaId: String(result.artistId),
-    duracion:  msToDuracion(result.trackTimeMillis),
-    preview:   result.previewUrl,
+    portada:  result.artworkUrl100,
+    nombre:   result.trackName,
+    artista:  result.artistName,
+    trackId:  String(result.trackId),
+    duracion: msToDuracion(result.trackTimeMillis),
+    preview:  result.previewUrl,
   }
 }
 
@@ -71,7 +71,7 @@ function Listado() {
   const handleAleatorio = () => {
     if (resultados.length === 0) return
     const random = resultados[Math.floor(Math.random() * resultados.length)]
-    navigate(`/items/${random.artistaId}`)
+    navigate(`/items/${random.trackId}`)
   }
 
   return (
