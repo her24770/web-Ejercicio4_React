@@ -8,6 +8,27 @@ Mini-blog de música construido con Vite + React + React Router v6, conectado a 
 
 ## Instrucciones para correr el proyecto
 
+### Opcion 1 — Docker (recomendado)
+
+```bash
+# 1. Clonar el repositorio
+git clone <url-del-repo>
+cd web-Ejercicio4_React
+
+# 2. Configurar variables de entorno
+cp .env.example .env
+# Editar .env y agregar tu YouTube API key
+
+# 3. Levantar con Docker Compose
+docker compose up -d
+```
+
+La app estará disponible en `http://localhost:3000`
+
+---
+
+### Opcion 2 — Local con Node
+
 ```bash
 # 1. Clonar el repositorio
 git clone <url-del-repo>

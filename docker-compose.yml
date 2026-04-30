@@ -1,0 +1,9 @@
+services:
+  musicreact:
+    build:
+      context: .
+      args:
+        VITE_YOUTUBE_API_KEY: ${VITE_YOUTUBE_API_KEY}
+    ports:
+      - "3000:80"
+    restart: unless-stopped
