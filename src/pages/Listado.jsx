@@ -1,3 +1,5 @@
+import './Listado.css'
+
 function Listado() {
   return <h1>Listado</h1>
 }

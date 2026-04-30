@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom'
+import './Detalle.css'
 
 function Detalle() {
   const { id } = useParams()

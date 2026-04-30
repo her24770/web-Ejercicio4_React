@@ -4,8 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import CardCancion from '../components/CardCancion'
 import CardArtista from '../components/CardArtista'
 import Icon from '../components/Icon'
-import { getTopSongs } from '../services/itunesService'
-import { ARTISTAS_DESTACADOS } from '../data/featuredArtists'
+import { getTopSongs, getTopArtists } from '../services/itunesService'
 
 function msToDuracion(ms) {
   if (!ms) return ''
@@ -17,23 +16,29 @@ function msToDuracion(ms) {
 
 function Home() {
   const [canciones, setCanciones] = useState([])
+  const [artistas, setArtistas] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState(null)
   const navigate = useNavigate()
 
   useEffect(() => {
-    getTopSongs()
-      .then(entries => {
-        const songs = entries.map(entry => ({
+    Promise.all([getTopSongs(), getTopArtists()])
+      .then(([songEntries, artistEntries]) => {
+        setCanciones(songEntries.map(entry => ({
           portada:   entry['im:image'][2].label,
           nombre:    entry['im:name'].label,
           artista:   entry['im:artist'].label,
           artistaId: entry['im:artist'].attributes.href.split('/').pop(),
           duracion:  msToDuracion(entry['im:duration']?.label),
-        }))
-        setCanciones(songs)
+        })))
+        setArtistas(artistEntries.map(entry => ({
+          foto:      entry['im:image']?.[2]?.label || null,
+          nombre:    entry['im:name'].label,
+          genero:    entry['category']?.attributes?.term || 'Música',
+          artistaId: entry['id']?.attributes?.['im:id'],
+        })))
       })
-      .catch(() => setError('No se pudieron cargar las canciones. Intenta de nuevo.'))
+      .catch(() => setError('No se pudieron cargar los datos. Intenta de nuevo.'))
       .finally(() => setCargando(false))
   }, [])
 
@@ -76,7 +81,7 @@ function Home() {
           <h2 className="home__section-title">Artistas destacados</h2>
         </div>
         <div className="artistas-grid">
-          {ARTISTAS_DESTACADOS.map(artista => (
+          {artistas.map(artista => (
             <CardArtista key={artista.artistaId} {...artista} />
           ))}
         </div>
