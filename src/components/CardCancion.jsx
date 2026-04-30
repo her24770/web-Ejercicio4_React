@@ -3,11 +3,11 @@ import './CardCancion.css'
 import { useNavigate } from 'react-router-dom'
 import Icon from './Icon'
 
-function CardCancion({ portada, nombre, artista, trackId, duracion, preview }) {
+function CardCancion({ portada, nombre, artista, trackId, duracion, preview, itemData }) {
   const navigate = useNavigate()
 
   const handleClick = () => {
-    if (trackId) navigate(`/items/${trackId}`)
+    if (trackId) navigate(`/items/${trackId}`, { state: itemData ? { itemData } : undefined })
   }
 
   const handlePlay = (e) => {
@@ -46,6 +46,7 @@ CardCancion.propTypes = {
   trackId:   PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   duracion:  PropTypes.string,
   preview:   PropTypes.string,
+  itemData:  PropTypes.object,
 }
 
 export default CardCancion

@@ -25,6 +25,11 @@ function extraerArtistas(entries) {
         nombre,
         trackId: entry['id']?.attributes?.['im:id'],
         foto:    entry['im:image']?.[2]?.label || null,
+        itemData: {
+          artworkUrl100: entry['im:image']?.[2]?.label || null,
+          trackName:     entry['im:name']?.label,
+          artistName:    entry['im:artist']?.label,
+        },
       })
     }
   })
@@ -46,6 +51,11 @@ function Home() {
           artista:  entry['im:artist'].label,
           trackId:  entry['id']?.attributes?.['im:id'],
           duracion: msToDuracion(entry['im:duration']?.label),
+          itemData: {
+            artworkUrl100: entry['im:image'][2].label,
+            trackName:     entry['im:name'].label,
+            artistName:    entry['im:artist'].label,
+          },
         })))
         setArtistas(extraerArtistas(entries))
       })
@@ -66,7 +76,7 @@ function Home() {
               <button
                 key={a.nombre}
                 className="artistas-tabla__fila"
-                onClick={() => navigate(`/items/${a.trackId}`)}
+                onClick={() => navigate(`/items/${a.trackId}`, { state: { itemData: a.itemData } })}
               >
                 <span className="artistas-tabla__num">{a.rank}</span>
                 <div className="artistas-tabla__avatar">
