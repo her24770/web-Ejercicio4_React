@@ -34,9 +34,19 @@
 
 /* ── Tabla de artistas ── */
 .artistas-tabla {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(5, auto);
+  grid-auto-flow: column;
   gap: var(--space-xs);
+}
+
+@media (max-width: 600px) {
+  .artistas-tabla {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-auto-flow: row;
+  }
 }
 
 .artistas-tabla__fila {
