@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import Icon from '../components/Icon'
+import YouTubePlayer from '../components/YouTubePlayer'
 import { lookupById } from '../services/itunesService'
 import './Detalle.css'
 
@@ -76,6 +77,7 @@ function Detalle() {
               </audio>
             </div>
           )}
+          <YouTubePlayer nombre={item.trackName} artista={item.artistName} />
         </div>
       </div>
     </div>

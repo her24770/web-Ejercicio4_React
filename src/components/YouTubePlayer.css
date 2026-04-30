@@ -1,0 +1,23 @@
+.youtube-player {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border);
+  aspect-ratio: 16 / 9;
+}
+
+.youtube-player--loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.youtube-player__iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
