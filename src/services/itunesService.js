@@ -6,6 +6,12 @@ export async function getTopSongs() {
   return data.feed.entry
 }
 
+export async function getTopArtists() {
+  const res = await fetch(`${BASE_URL}/us/rss/topartists/limit=10/json`)
+  const data = await res.json()
+  return data.feed.entry
+}
+
 export async function searchMusic(query) {
   const res = await fetch(`${BASE_URL}/search?term=${encodeURIComponent(query)}&media=music&limit=25`)
   const data = await res.json()
@@ -16,4 +22,10 @@ export async function lookupById(id) {
   const res = await fetch(`${BASE_URL}/lookup?id=${id}`)
   const data = await res.json()
   return data.results[0]
+}
+
+export async function getArtistTopSong(artistId) {
+  const res = await fetch(`${BASE_URL}/lookup?id=${artistId}&entity=song&limit=2`)
+  const data = await res.json()
+  return data.results.find(r => r.wrapperType === 'track')
 }

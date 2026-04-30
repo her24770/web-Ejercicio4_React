@@ -71,7 +71,7 @@ function Detalle() {
           {item.previewUrl && (
             <div className="detalle-cancion__preview">
               <p className="detalle-cancion__preview-label">Vista previa (30 seg)</p>
-              <audio controls src={item.previewUrl} className="reproductor-preview__audio">
+              <audio controls src={item.previewUrl} className="detalle-cancion__audio">
                 Tu navegador no soporta audio.
               </audio>
             </div>
