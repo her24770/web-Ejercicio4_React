@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useLocation } from 'react-router-dom'
 import Icon from '../components/Icon'
 import YouTubePlayer from '../components/YouTubePlayer'
 import { lookupById } from '../services/itunesService'
@@ -15,12 +15,25 @@ function msToDuracion(ms) {
 
 function Detalle() {
   const { id } = useParams()
-  const [item, setItem] = useState(null)
-  const [cargando, setCargando] = useState(true)
+  const { state } = useLocation()
+  const stateItem = state?.itemData || null
+  const isFull = stateItem?.wrapperType === 'track'
+
+  const [item, setItem] = useState(stateItem)
+  const [cargando, setCargando] = useState(!stateItem)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
+    if (isFull) return
+
     lookupById(id)
-      .then(result => setItem(result))
+      .then(result => {
+        if (result) setItem(result)
+        else if (!stateItem) setError(true)
+      })
+      .catch(() => {
+        if (!stateItem) setError(true)
+      })
       .finally(() => setCargando(false))
   }, [id])
 
@@ -30,7 +43,7 @@ function Detalle() {
     </div>
   )
 
-  if (!item) return (
+  if (error || !item) return (
     <div className="container" style={{ padding: 'var(--space-2xl) 0' }}>
       <p style={{ color: 'var(--text-muted)' }}>No se encontró la canción.</p>
     </div>

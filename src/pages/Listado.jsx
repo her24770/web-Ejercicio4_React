@@ -21,6 +21,11 @@ function mapTopSong(entry) {
     artista:  entry['im:artist'].label,
     trackId:  entry['id']?.attributes?.['im:id'],
     duracion: msToDuracion(entry['im:duration']?.label),
+    itemData: {
+      artworkUrl100: entry['im:image'][2].label,
+      trackName:     entry['im:name'].label,
+      artistName:    entry['im:artist'].label,
+    },
   }
 }
 
@@ -32,6 +37,7 @@ function mapSearchResult(result) {
     trackId:  String(result.trackId),
     duracion: msToDuracion(result.trackTimeMillis),
     preview:  result.previewUrl,
+    itemData: result,
   }
 }
 
